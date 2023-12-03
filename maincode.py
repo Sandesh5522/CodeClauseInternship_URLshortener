@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 import urlshortener as us
+import validators as va
 
 sg.theme('DarkAmber')
 
@@ -16,9 +17,12 @@ while True:
     if event == sg.WIN_CLOSED or event == 'Cancel':
         break
     elif event == 'Ok':
-        label1 = us.urlshort(values['inputURL'])
-        window['label00'].update("Shortened URL: ")
-        window['label01'].update(label1)
+        if va.url(values['inputURL']):
+            label1 = us.urlshort(values['inputURL'])
+            window['label00'].update("Shortened URL: ")
+            window['label01'].update(label1)
+        elif not va.url(values['inputURL']):
+            window['label00'].update("Invalid URL!!")
     elif event == 'Copy':
         surl = window['label01'].get()
         window.TKroot.clipboard_append(surl)
