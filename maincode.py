@@ -3,6 +3,7 @@ import urlshortener as us
 import validators as va
 
 sg.theme('DarkAmber')
+sg.set_options(font = ("Consolas", 10))
 
 label1 = ""
 layout = [  [sg.Text('Python URL shortener!!')],
@@ -10,7 +11,7 @@ layout = [  [sg.Text('Python URL shortener!!')],
             [sg.Text('Shortened URL will appear here.',key = 'label00'), sg.Text(label1, key = 'label01'), sg.Button('Copy')],
             [sg.Button('Ok'), sg.Button('Cancel')] ]
 
-window = sg.Window('Window Title', layout)
+window = sg.Window('URL Shortener', layout, resizable = True)
 
 while True:
     event, values = window.read()
