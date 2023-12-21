@@ -1,17 +1,25 @@
 import PySimpleGUI as sg
 import validators as va
 import pyshorteners
+import sys
+
+# This bit gets the taskbar icon working properly in Windows.
+if sys.platform.startswith('win'):
+    import ctypes
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(u'CompanyName.ProductName.SubProduct.VersionInformation') # Arbitrary string
 
 sg.theme('DarkAmber')
-sg.set_options(font = ("Consolas", 10))
+sg.set_options(font = ("Bahnschrift", 10), margins=(5,5,5,5), \
+               auto_size_buttons=True, auto_size_text=True)
 
 label1 = ""
 layout = [  [sg.Text('Python URL shortener!!')],
             [sg.Text('Enter URL'), sg.InputText('',key='inputURL')],
-            [sg.Text('Shortened URL will appear here.',key = 'label00'), sg.Text(label1, key = 'label01'), sg.Button('Copy')],
+            [sg.Text('Shortened URL will appear here.',key = 'label00'), \
+             sg.Text(label1, key = 'label01'), sg.Button('Copy')],
             [sg.Button('Ok'), sg.Button('Cancel')] ]
 
-window = sg.Window('URL Shortener', layout, resizable = True)
+window = sg.Window('URL Shortener', layout, resizable = True, icon='icons8_shorten_urls.ico')
 
 def urlshort(url):
     type_tiny = pyshorteners.Shortener()
@@ -32,5 +40,6 @@ while True:
     elif event == 'Copy':
         surl = window['label01'].get()
         window.TKroot.clipboard_append(surl)
+        window['Copy'].update('Copied!')
 
 window.close()
