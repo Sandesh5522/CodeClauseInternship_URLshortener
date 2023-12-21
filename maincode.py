@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
-import urlshortener as us
 import validators as va
+import pyshorteners
 
 sg.theme('DarkAmber')
 sg.set_options(font = ("Consolas", 10))
@@ -13,13 +13,18 @@ layout = [  [sg.Text('Python URL shortener!!')],
 
 window = sg.Window('URL Shortener', layout, resizable = True)
 
+def urlshort(url):
+    type_tiny = pyshorteners.Shortener()
+    short_url = type_tiny.tinyurl.short(url)
+    return short_url
+
 while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED or event == 'Cancel':
         break
     elif event == 'Ok':
         if va.url(values['inputURL']):
-            label1 = us.urlshort(values['inputURL'])
+            label1 = urlshort(values['inputURL'])
             window['label00'].update("Shortened URL: ")
             window['label01'].update(label1)
         elif not va.url(values['inputURL']):
